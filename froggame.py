@@ -3,10 +3,17 @@ import random
 import time
 import json
 import sys
+import colorama
 from string import ascii_lowercase
 from timeit import timeit
 from typing import Any
 # ------------------------------------------------------------------------
+
+class bcolors:
+    OK = '\033[92m' #GREEN
+    WARNING = '\033[93m' #YELLOW
+    FAIL = '\033[91m' #RED
+    RESET = '\033[0m' #RESET COLOR
 
 def gamemode() -> tuple[int | float, str]:
     while True:
@@ -71,6 +78,15 @@ def check_name(name: str, mode: str) -> bool:
 def sort_dict(json_dict):
     return dict(sorted(json_dict.items(), key=lambda item: item[1]))
 
+def print_db(db, name_player):
+    iterator = iter(db.items())
+    for i in range(5):
+        x = next(iterator)
+        if x[0] == name_player:
+
+            print(bcolors.OK, x)
+        else:
+            print(bcolors.RESET, x)
 
 def write_json(mode: str, player_name: str, time_took: str) -> None:
     with open('highscoredb.json', 'r') as db:
@@ -78,6 +94,7 @@ def write_json(mode: str, player_name: str, time_took: str) -> None:
     
     if check_name(player_name, mode):
         if float(time_took) > float(loaded_db[mode][player_name]):
+            print_db(loaded_db[mode], player_name)
             return None
 
     loaded_db[mode][player_name] = time_took
@@ -86,6 +103,7 @@ def write_json(mode: str, player_name: str, time_took: str) -> None:
 
     with open('highscoredb.json', 'w') as db:
         json.dump(loaded_db, db, indent=4)
+    print_db(loaded_db[mode], player_name)
 
 def start_again():
     if input("wanna start again? (y/n)") == "y":
