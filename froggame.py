@@ -68,15 +68,8 @@ def check_name(name: str, mode: str) -> bool:
         return True
     return False
 
-def sort_dict(dict):
-    sorted_values = sorted(dict.values())
-    sorted_dict = {}
-    for i in sorted_values:
-        for k in dict.keys():
-            if dict[k] == i:
-                sorted_dict[k] = dict[k]
-                break
-    return sorted_dict
+def sort_dict(json_dict):
+    return dict(sorted(json_dict.items(), key=lambda item: item[1]))
 
 
 def write_json(mode: str, player_name: str, time_took: str) -> None:
