@@ -4,10 +4,13 @@ import time
 import json
 import sys
 import colorama
+from os import system
 from string import ascii_lowercase
 from timeit import timeit
 from typing import Any
 # ------------------------------------------------------------------------
+
+clear = lambda: system('clear')
 
 class bcolors:
     OK = '\033[92m' #GREEN
@@ -55,16 +58,18 @@ def valiate_input(*, validater: str, inp: str) -> bool:
 class Frog:
     def __init__(self) -> None:
         self.posX = 0 #Ende bei 10
-        self.wins = 0
         
     def springen(self, gamios: int) -> None:
-        if self.posX < 3:
+        if self.posX < 10:
+            print(self.posX, " von 10")
             self.posX += input_player(gamios)
-            print(self.posX)
+            clear()
             self.springen(gamios)
+            
         else:
+            print(self.posX, "von 10")
             input("End")
-            self.wins = self.wins + 1
+            clear()
 
 
 def check_name(name: str, mode: str) -> bool:
@@ -106,20 +111,24 @@ def write_json(mode: str, player_name: str, time_took: str) -> None:
     print_db(loaded_db[mode], player_name)
 
 def start_again():
-    if input("wanna start again? (y/n)") == "y":
+    x = input("wanna start again? (y/n)")
+    if x == "y":
+        clear()
         main()
-    elif input("wanna start again? (y/n)") == "n":
+    elif x == "n":
         sys.exit(0)
     else: 
+        clear()
         start_again()
 
 def main(*args: Any, **kwargs: Any) -> None:
     frog1 = Frog()
     gamemode_value, gamemode_name = gamemode()
+    clear()
     t1 = timeit(stmt='frog1.springen(gamemode_value)', globals={'frog1': frog1, 'gamemode_value': gamemode_value}, number=1)
 
     name_player = input("Enter username: ")
-
+    clear()
     if gamemode_name == 'beginner':
         write_json("beginner", name_player, str(t1))
     elif gamemode_name == 'normal':
