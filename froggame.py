@@ -68,6 +68,16 @@ def check_name(name: str, mode: str) -> bool:
         return True
     return False
 
+def sort_dict(dict):
+    sorted_values = sorted(dict.values())
+    sorted_dict = {}
+    for i in sorted_values:
+        for k in dict.keys():
+            if dict[k] == i:
+                sorted_dict[k] = dict[k]
+                break
+    return sorted_dict
+
 
 def write_json(mode: str, player_name: str, time_took: str) -> None:
     with open('highscoredb.json', 'r') as db:
@@ -78,6 +88,8 @@ def write_json(mode: str, player_name: str, time_took: str) -> None:
             return None
 
     loaded_db[mode][player_name] = time_took
+
+    loaded_db[mode] = sort_dict(loaded_db[mode])
 
     with open('highscoredb.json', 'w') as db:
         json.dump(loaded_db, db, indent=4)
