@@ -4,13 +4,14 @@ import time
 import json
 import sys
 import colorama
-from os import system
+import subprocess
+import platform
 from string import ascii_lowercase
 from timeit import timeit
 from typing import Any
 # ------------------------------------------------------------------------
 
-clear = lambda: system('clear')
+clear = lambda: subprocess.run('cls' if platform.system() == 'Windows' else 'clear', shell=True, check=True)
 
 class bcolors:
     OK = '\033[92m' #GREEN
